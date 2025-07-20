@@ -1406,6 +1406,8 @@
         // Voice Recognition for Navigation
         let recognition;
         let isListening = false;
+        let autoScrollInterval = null;
+        let isAutoScrolling = false;
 
         // Check if browser supports speech recognition
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -1444,14 +1446,10 @@
                     if (slideNumber >= 1 && slideNumber <= 6) {
                         goToSlide(slideNumber - 1);
                     }
-                } else if (command.includes('stop scroll') || command.includes('stop auto scroll') || command.includes('pause scroll')) {
-                    isAutoScrolling = false;
-                    stopAutoScroll();
-                    console.log('Auto-scroll stopped by voice command');
-                } else if (command.includes('start scroll') || command.includes('start auto scroll') || command.includes('resume scroll') || command.includes('continue scroll')) {
-                    isAutoScrolling = true;
+                } else if (command.includes('auto scroll') || command.includes('start scroll') || command.includes('begin scroll')) {
                     startAutoScroll();
-                    console.log('Auto-scroll started by voice command');
+                } else if (command.includes('stop scroll') || command.includes('stop auto scroll') || command.includes('pause scroll')) {
+                    stopAutoScroll();
                 }
             };
 
@@ -1485,6 +1483,40 @@
                 }
             }
 
+            function startAutoScroll() {
+                if (isAutoScrolling) return;
+                
+                isAutoScrolling = true;
+                console.log('Auto-scroll started');
+                
+                function smoothScroll() {
+                    if (!isAutoScrolling) return;
+                    
+                    window.scrollBy({
+                        top: 1,
+                        behavior: 'auto'
+                    });
+                    
+                    setTimeout(() => {
+                        requestAnimationFrame(smoothScroll);
+                    }, 50); // 50ms delay = 20fps for slower scrolling
+                }
+                
+                smoothScroll();
+            }
+
+            function stopAutoScroll() {
+                if (!isAutoScrolling) return;
+                
+                isAutoScrolling = false;
+                console.log('Auto-scroll stopped');
+                
+                if (autoScrollInterval) {
+                    clearInterval(autoScrollInterval);
+                    autoScrollInterval = null;
+                }
+            }
+
             // Start voice recognition when page loads
             window.addEventListener('load', function() {
                 setTimeout(startVoiceRecognition, 1000);
@@ -1509,108 +1541,6 @@
                 } else {
                     document.exitFullscreen();
                 }
-            }
-        });
-
-        // Auto-scroll functionality
-        let autoScrollInterval;
-        let isAutoScrolling = true;
-        let mouseTimeout;
-        let lastMouseY = 0;
-
-        function startAutoScroll() {
-            if (autoScrollInterval) clearInterval(autoScrollInterval);
-            
-            autoScrollInterval = setInterval(() => {
-                if (isAutoScrolling) {
-                    window.scrollBy({
-                        top: 1,
-                        behavior: 'smooth'
-                    });
-                }
-            }, 100); // Scroll 1px every 100ms = slow scroll
-        }
-
-        function stopAutoScroll() {
-            if (autoScrollInterval) {
-                clearInterval(autoScrollInterval);
-                autoScrollInterval = null;
-            }
-        }
-
-        function handleMouseMove(event) {
-            const currentMouseY = event.clientY;
-            
-            // Check if mouse moved significantly
-            if (Math.abs(currentMouseY - lastMouseY) > 5) {
-                isAutoScrolling = false;
-                stopAutoScroll();
-                
-                // Clear existing timeout
-                if (mouseTimeout) clearTimeout(mouseTimeout);
-                
-                // Restart auto-scroll after mouse stops moving
-                mouseTimeout = setTimeout(() => {
-                    isAutoScrolling = true;
-                    startAutoScroll();
-                }, 2000); // Wait 2 seconds after mouse stops moving
-            }
-            
-            lastMouseY = currentMouseY;
-        }
-
-        function handleMouseWheel(event) {
-            // Pause auto-scroll when user scrolls manually
-            isAutoScrolling = false;
-            stopAutoScroll();
-            
-            // Clear existing timeout
-            if (mouseTimeout) clearTimeout(mouseTimeout);
-            
-            // Restart auto-scroll after user stops scrolling
-            mouseTimeout = setTimeout(() => {
-                isAutoScrolling = true;
-                startAutoScroll();
-            }, 3000); // Wait 3 seconds after manual scroll
-        }
-
-        function handleTouchMove() {
-            // Pause auto-scroll on touch devices
-            isAutoScrolling = false;
-            stopAutoScroll();
-            
-            // Clear existing timeout
-            if (mouseTimeout) clearTimeout(mouseTimeout);
-            
-            // Restart auto-scroll after touch stops
-            mouseTimeout = setTimeout(() => {
-                isAutoScrolling = true;
-                startAutoScroll();
-            }, 3000);
-        }
-
-        // Add event listeners for auto-scroll control
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('wheel', handleMouseWheel);
-        document.addEventListener('touchmove', handleTouchMove);
-
-        // Start auto-scroll when page loads
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                startAutoScroll();
-            }, 2000); // Start auto-scroll 2 seconds after page loads
-        });
-
-        // Pause auto-scroll when presentation is in fullscreen
-        document.addEventListener('fullscreenchange', function() {
-            if (document.fullscreenElement) {
-                isAutoScrolling = false;
-                stopAutoScroll();
-            } else {
-                setTimeout(() => {
-                    isAutoScrolling = true;
-                    startAutoScroll();
-                }, 1000);
             }
         });
     </script>
