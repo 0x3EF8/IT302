@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla's Vertical Integration Strategy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #dc2626;
+            --primary-blue: #2563eb;
+            --accent-gold: #f59e0b;
+            --success-green: #059669;
+            --warning-orange: #ea580c;
+            --danger-red: #dc2626;
+            --purple: #7c3aed;
+            --teal: #0d9488;
+            
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --bg-card: #1e1e1e;
+            --bg-elevated: #262626;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #e5e5e5;
+            --text-muted: #a3a3a3;
+            --text-subtle: #737373;
+            
+            --border-primary: #404040;
+            --border-secondary: #525252;
+            --border-accent: #3b82f6;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            
+            --gradient-primary: linear-gradient(135deg, #dc2626 0%, #2563eb 100%);
+            --gradient-secondary: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            --gradient-accent: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Professional Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(220, 38, 38, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
+                linear-gradient(135deg, var(--bg-primary) 0%, #0f0f0f 100%);
+            z-index: -1;
+        }
+
+        /* Main Container */
+        .presentation-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar */
+        .presentation-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .presentation-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .presentation-title {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .presentation-title h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.025em;
+        }
+
+        .presentation-title .subtitle {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .presentation-controls {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .slide-counter {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .progress-track {
+            width: 200px;
+            height: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-indicator {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .progress-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -10px;
+            width: 10px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4));
+            animation: progressShimmer 2s infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% { transform: translateX(-10px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(10px); opacity: 0; }
+        }
+
+        /* Main Slide Area */
+        .slide-viewport {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-2xl);
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .slide-viewport::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+            z-index: 1;
+        }
+
+        .slide-header {
+            background: var(--gradient-secondary);
+            padding: 3rem 3rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-primary);
+            position: relative;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--border-primary);
+        }
+
+        .slide-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+        }
+
+        .slide-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .slide-content {
+            padding: 3rem;
+            min-height: 500px;
+            background: var(--bg-card);
+        }
+
+        /* Professional Cards */
+        .card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--border-accent);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            padding: 2rem 2rem 1rem;
+            background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-tertiary) 100%);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-content {
+            padding: 0 2rem 2rem;
+        }
+
+        /* Grid System */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (max-width: 1200px) {
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .presentation-title h1 {
+                font-size: 1.5rem;
+            }
+            
+            .slide-title {
+                font-size: 2rem;
+            }
+            
+            .presentation-container {
+                padding: 1rem;
+            }
+            
+            .slide-content {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* Professional Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.875rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 16px;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        /* Professional Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 1px solid var(--border-secondary);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: var(--bg-tertiary);
+            border-color: var(--border-accent);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            border-color: transparent;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--gradient-accent);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Navigation Controls */
+        .presentation-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-indicators {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--border-primary);
+            position: relative;
+        }
+
+        .indicator.active {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            transform: scale(1.4);
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .indicator.active::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .indicator:hover:not(.active) {
+            background: var(--text-muted);
+            transform: scale(1.2);
+        }
+
+        /* Quick Navigation */
+        .quick-navigation {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .quick-nav-btn {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-size: 0.875rem;
+            height: auto;
+            justify-content: flex-start;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+        }
+
+        .quick-nav-btn.active {
+            background: var(--gradient-primary);
+            border-color: transparent;
+            color: white;
+        }
+
+        /* Professional Images */
+        img {
+            width: 100%;
+            border-radius: 8px;
+            height: auto;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border-primary);
+        }
+
+        img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Color-coded Cards */
+        .card-orange { border-left: 3px solid var(--warning-orange); }
+        .card-green { border-left: 3px solid var(--success-green); }
+        .card-yellow { border-left: 3px solid var(--accent-gold); }
+        .card-blue { border-left: 3px solid var(--primary-blue); }
+        .card-purple { border-left: 3px solid var(--purple); }
+        .card-red { border-left: 3px solid var(--danger-red); }
+        .card-teal { border-left: 3px solid var(--teal); }
+
+        /* Progress Components */
+        .progress {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid var(--border-primary);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            width: 75%;
+            position: relative;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -15px;
+            width: 15px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+            animation: progressShimmer 2s infinite;
+        }
+
+        /* Professional Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Slide Animations */
+        .slide {
+            display: none;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-1 .card { animation: fadeIn 0.8s ease-out 0.2s both; }
+        .slide-1 img { animation: slideInRight 0.8s ease-out 0.4s both; }
+
+        .slide-2 .card:nth-child(1) { animation: slideInLeft 0.8s ease-out 0.2s both; }
+        .slide-2 .card:nth-child(2) { animation: slideInRight 0.8s ease-out 0.4s both; }
+
+        .slide-3 .card { animation: scaleIn 0.6s ease-out both; }
+        .slide-3 .card:nth-child(1) { animation-delay: 0.1s; }
+        .slide-3 .card:nth-child(2) { animation-delay: 0.2s; }
+        .slide-3 .card:nth-child(3) { animation-delay: 0.3s; }
+        .slide-3 .card:nth-child(4) { animation-delay: 0.4s; }
+        .slide-3 .card:nth-child(5) { animation-delay: 0.5s; }
+        .slide-3 .card:nth-child(6) { animation-delay: 0.6s; }
+
+        .slide-4 .card { animation: fadeIn 0.8s ease-out both; }
+        .slide-4 .card:nth-child(1) { animation-delay: 0.2s; }
+        .slide-4 .card:nth-child(2) { animation-delay: 0.4s; }
+        .slide-4 .card:nth-child(3) { animation-delay: 0.6s; }
+
+        .slide-5 .card { animation: bounceIn 0.8s ease-out both; }
+        .slide-5 .card:nth-child(1) { animation-delay: 0.2s; }
+        .slide-5 .card:nth-child(2) { animation-delay: 0.4s; }
+        .slide-5 .card:nth-child(3) { animation-delay: 0.6s; }
+
+        .slide-6 .card { animation: slideIn 0.8s ease-out both; }
+        .slide-6 .card:nth-child(1) { animation-delay: 0.2s; }
+        .slide-6 .card:nth-child(2) { animation-delay: 0.4s; }
+        .slide-6 .card:nth-child(3) { animation-delay: 0.6s; }
+
+        /* Professional Text Colors */
+        .text-orange-800 { color: #ea580c; }
+        .text-green-800 { color: #059669; }
+        .text-yellow-800 { color: #d97706; }
+        .text-blue-800 { color: #2563eb; }
+        .text-purple-800 { color: #7c3aed; }
+        .text-red-800 { color: #dc2626; }
+        .text-teal-800 { color: #0d9488; }
+        .text-gray-600 { color: var(--text-secondary); }
+        .text-gray-700 { color: var(--text-primary); }
+        .text-gray-800 { color: var(--text-primary); }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .font-bold { font-weight: 700; }
+        .font-medium { font-weight: 500; }
+        .text-sm { font-size: 0.875rem; }
+        .text-xs { font-size: 0.75rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .p-2 { padding: 0.5rem; }
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .rounded { border-radius: 0.5rem; }
+        .rounded-lg { border-radius: 0.75rem; }
+        .shadow-lg { box-shadow: var(--shadow-lg); }
+        .italic { font-style: italic; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        .space-y-8 > * + * { margin-top: 2rem; }
+
+        /* Professional Highlight Boxes */
+        .highlight-box {
+            background: var(--gradient-secondary);
+            border: 1px solid var(--border-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+        }
+
+        /* Number Circles */
+        .number-circle {
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.625rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Professional Responsive */
+        @media (max-width: 640px) {
+            .presentation-container {
+                padding: 0.75rem;
+            }
+            
+            .slide-content {
+                padding: 2rem 1rem;
+            }
+            
+            .card-header {
+                padding: 1.5rem 1.5rem 0.75rem;
+            }
+            
+            .card-content {
+                padding: 0 1.5rem 1.5rem;
+            }
+            
+            .presentation-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Professional Header -->
+        <div class="presentation-header">
+            <div class="header-content">
+                <div class="presentation-title">
+                    <h1>Tesla's Vertical Integration Strategy</h1>
+                    <div class="subtitle">Professional Business Analysis Presentation</div>
+                </div>
+                <div class="presentation-controls">
+                    <div class="slide-counter">
+                        <span id="slide-counter">Slide 1 of 6</span>
+                        <div class="progress-track">
+                            <div class="progress-indicator" id="progress-indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Slide Viewport -->
+        <div class="slide-viewport">
+            <div class="slide-header">
+                <div class="slide-number" id="slide-number">01 / 06</div>
+                <h2 class="slide-title" id="slide-title">Tesla's Vertical Integration Strategy</h2>
+                <p class="slide-subtitle" id="slide-subtitle">How Tesla Controls Everything to Win Big</p>
+            </div>
+            <div class="slide-content" id="slide-content">
+                <!-- Slide content will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Professional Navigation -->
+        <div class="presentation-nav">
+            <button class="btn" id="prev-btn" onclick="previousSlide()">
+                <span>←</span> Previous
+            </button>
+            
+            <div class="nav-indicators" id="indicators">
+                <!-- Indicators will be generated by JavaScript -->
+            </div>
+            
+            <button class="btn" id="next-btn" onclick="nextSlide()">
+                Next <span>→</span>
+            </button>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div class="quick-navigation" id="quick-nav">
+            <!-- Quick navigation buttons will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 6;
+
+        const slides = [
+            {
+                title: "Tesla's Vertical Integration Strategy",
+                subtitle: "How Tesla Controls Everything to Win Big",
+                content: `
+                    <div class="slide slide-1 active">
+                        <div class="text-center space-y-8">
+                            <div class="grid grid-2 gap-4" style="align-items: center;">
+                                <div class="space-y-6">
+                                    <div class="highlight-box">
+                                        <div class="space-y-4">
+                                            <p class="text-xl text-gray-700">
+                                                🚗 Tesla doesn't just make cars - they control almost everything that goes into making them!
+                                            </p>
+                                            <p class="text-lg text-gray-600">
+                                                Let's explore how Tesla's "do-it-yourself" approach helped them become the world's most valuable car company.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-4">
+                                    <img src="images/tesla_model_s_intro.png" alt="Tesla Model S" class="rounded-lg shadow-lg">
+                                    <p class="text-sm text-gray-600 italic text-center">Tesla Model S - The car that changed everything</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-center gap-4 text-sm">
+                                <span class="badge">Easy to Understand</span>
+                                <span class="badge">Real Examples</span>
+                                <span class="badge">Visual Learning</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "What Does 'Vertical Integration' Mean?",
+                subtitle: "Think of it Like Building Your Own House",
+                content: `
+                    <div class="slide slide-2 active">
+                        <div class="space-y-8">
+                            <div class="text-center mb-6">
+                                <div class="highlight-box">
+                                    <p class="text-lg text-gray-600">
+                                        Imagine you want to build a house. You have two choices:
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="grid grid-2 gap-4">
+                                <div class="card card-orange">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-orange-800">
+                                            🏠 The Normal Way (Most Companies)
+                                        </h3>
+                                    </div>
+                                    <div class="card-content space-y-4">
+                                        <img src="images/traditional_car_manufacturing.png" alt="Traditional car manufacturing" class="rounded-lg">
+                                        <p class="text-sm font-medium text-orange-800">🏗️ Hire different companies for everything:</p>
+                                        <div class="space-y-3">
+                                            <div class="flex items-center gap-2 p-3 bg-slate-700 rounded-lg">
+                                                <div style="width: 0.75rem; height: 0.75rem; background: #ea580c; border-radius: 50%;"></div>
+                                                <span class="text-sm">Company A makes the bricks</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 p-3 bg-slate-700 rounded-lg">
+                                                <div style="width: 0.75rem; height: 0.75rem; background: #ea580c; border-radius: 50%;"></div>
+                                                <span class="text-sm">Company B does the plumbing</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 p-3 bg-slate-700 rounded-lg">
+                                                <div style="width: 0.75rem; height: 0.75rem; background: #ea580c; border-radius: 50%;"></div>
+                                                <span class="text-sm">Company C handles electricity</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 p-3 bg-blue-900 rounded-lg">
+                                                <div style="width: 0.75rem; height: 0.75rem; background: #2563eb; border-radius: 50%;"></div>
+                                                <span class="text-sm font-medium">You just put it together</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-orange-800 italic">⚠️ You depend on others and pay their prices</p>
+                                    </div>
+                                </div>
+                                <div class="card card-green">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-green-800">
+                                            🏭 Tesla's Way (Vertical Integration)
+                                        </h3>
+                                    </div>
+                                    <div class="card-content space-y-4">
+                                        <img src="images/tesla_gigafactory.png" alt="Tesla Gigafactory" class="rounded-lg">
+                                        <p class="text-sm font-medium text-green-800">🔧 Do everything yourself:</p>
+                                        <div class="space-y-3">
+                                            <div class="flex items-center gap-2 p-3 bg-slate-700 rounded-lg">
+                                                <div style="width: 0.75rem; height: 0.75rem; background: #059669; border-radius: 50%;"></div>
+                                                <span class="text-sm">You make the bricks</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 p-3 bg-slate-700 rounded-lg">
+                                                <div style="width: 0.75rem; height: 0.75rem; background: #059669; border-radius: 50%;"></div>
+                                                <span class="text-sm">You do the plumbing</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 p-3 bg-slate-700 rounded-lg">
+                                                <div style="width: 0.75rem; height: 0.75rem; background: #059669; border-radius: 50%;"></div>
+                                                <span class="text-sm">You handle electricity</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 p-3 bg-green-900 rounded-lg">
+                                                <div style="width: 0.75rem; height: 0.75rem; background: #047857; border-radius: 50%;"></div>
+                                                <span class="text-sm font-medium">You control everything!</span>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-green-800 italic">✅ You control quality, cost, and timing</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="highlight-box">
+                                    <p class="text-lg font-medium text-blue-800">
+                                        🎯 Tesla chose to "build their own house" - and it changed everything!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "How Tesla Does Everything Themselves",
+                subtitle: "6 Big Areas Where Tesla Says 'We'll Do It Ourselves'",
+                content: `
+                    <div class="slide slide-3 active">
+                        <div class="space-y-6">
+                            <div class="text-center mb-6">
+                                <div class="highlight-box">
+                                    <p class="text-lg text-gray-600">Here's what Tesla controls that most car companies don't:</p>
+                                </div>
+                            </div>
+                            <div class="grid grid-3 gap-4">
+                                <div class="card card-yellow">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-yellow-800">🔋 Batteries</h3>
+                                    </div>
+                                    <div class="card-content space-y-3">
+                                        <img src="images/tesla_battery_production.png" alt="Tesla battery production" class="rounded-lg">
+                                        <span class="badge" style="background: #d97706; color: white;">Gigafactories</span>
+                                        <p class="text-sm text-yellow-800 font-medium">What they do:</p>
+                                        <p class="text-sm text-gray-300">Tesla builds huge factories to make their own batteries instead of buying them from other companies.</p>
+                                        <p class="text-xs text-yellow-700 italic">💡 Like growing your own vegetables instead of buying from the store!</p>
+                                    </div>
+                                </div>
+                                <div class="card card-blue">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-blue-800">💻 Software</h3>
+                                    </div>
+                                    <div class="card-content space-y-3">
+                                        <img src="images/tesla_software_interface.png" alt="Tesla software interface" class="rounded-lg">
+                                        <span class="badge" style="background: #2563eb; color: white;">Self-Driving</span>
+                                        <p class="text-sm text-blue-800 font-medium">What they do:</p>
+                                        <p class="text-sm text-gray-300">Tesla writes all the computer code that runs their cars, including the self-driving features.</p>
+                                        <p class="text-xs text-blue-700 italic">💡 Like creating your own smartphone apps instead of downloading them!</p>
+                                    </div>
+                                </div>
+                                <div class="card card-purple">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-purple-800">🏭 Manufacturing</h3>
+                                    </div>
+                                    <div class="card-content space-y-3">
+                                        <img src="images/tesla_manufacturing_robots.png" alt="Tesla manufacturing robots" class="rounded-lg">
+                                        <span class="badge" style="background: #7c3aed; color: white;">Robots</span>
+                                        <p class="text-sm text-purple-800 font-medium">What they do:</p>
+                                        <p class="text-sm text-gray-300">Tesla designs and builds their own robots and machines to make cars faster and better.</p>
+                                        <p class="text-xs text-purple-700 italic">💡 Like having your own custom kitchen tools for cooking!</p>
+                                    </div>
+                                </div>
+                                <div class="card card-green">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-green-800">⚡ Charging Stations</h3>
+                                    </div>
+                                    <div class="card-content space-y-3">
+                                        <img src="images/tesla_supercharger_station.png" alt="Tesla Supercharger station" class="rounded-lg">
+                                        <span class="badge" style="background: #059669; color: white;">50,000+ Locations</span>
+                                        <p class="text-sm text-green-800 font-medium">What they do:</p>
+                                        <p class="text-sm text-gray-300">Tesla builds their own charging stations around the world so their customers can charge anywhere.</p>
+                                        <p class="text-xs text-green-700 italic">💡 Like building your own gas stations for your cars!</p>
+                                    </div>
+                                </div>
+                                <div class="card card-red">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-red-800">🏪 Selling Cars</h3>
+                                    </div>
+                                    <div class="card-content space-y-3">
+                                        <img src="images/tesla_showroom.png" alt="Tesla showroom" class="rounded-lg">
+                                        <span class="badge" style="background: #dc2626; color: white;">No Dealers</span>
+                                        <p class="text-sm text-red-800 font-medium">What they do:</p>
+                                        <p class="text-sm text-gray-300">Tesla sells cars directly to customers through their own stores, not through car dealerships.</p>
+                                        <p class="text-xs text-red-700 italic">💡 Like selling your homemade cookies directly instead of through a store!</p>
+                                    </div>
+                                </div>
+                                <div class="card card-teal">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-teal-800">🔧 Raw Materials</h3>
+                                    </div>
+                                    <div class="card-content space-y-3">
+                                        <img src="images/lithium_mining_tesla.png" alt="Lithium mining for Tesla" class="rounded-lg">
+                                        <span class="badge" style="background: #0d9488; color: white;">Mining</span>
+                                        <p class="text-sm text-teal-800 font-medium">What they do:</p>
+                                        <p class="text-sm text-gray-300">Tesla even gets involved in mining the materials they need, like lithium for batteries.</p>
+                                        <p class="text-xs text-teal-700 italic">💡 Like growing your own cotton to make your own clothes!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="highlight-box">
+                                    <p class="text-lg font-medium text-gray-800">🎯 Most car companies only do the final assembly - Tesla does it ALL!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Why This Strategy Works So Well",
+                subtitle: "The Big Benefits Tesla Gets",
+                content: `
+                    <div class="slide slide-4 active">
+                        <div class="space-y-6">
+                            <div class="text-center mb-6">
+                                <div class="highlight-box">
+                                    <p class="text-lg text-gray-600">Here's why Tesla's "do-it-yourself" approach is so powerful:</p>
+                                </div>
+                            </div>
+                            <div class="space-y-6">
+                                <div class="card card-green" style="background: linear-gradient(135deg, #064e3b, #065f46);">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-green-800">💰 They Save Money & Make More Profit</h3>
+                                    </div>
+                                    <div class="card-content space-y-4">
+                                        <div class="grid grid-3 gap-4">
+                                            <div class="space-y-2">
+                                                <p class="text-sm font-medium text-green-800">How they save money:</p>
+                                                <ul class="text-sm text-gray-300 space-y-1">
+                                                    <li>• No middleman taking a cut</li>
+                                                    <li>• Buy materials directly</li>
+                                                    <li>• Control their own costs</li>
+                                                </ul>
+                                            </div>
+                                            <div class="bg-slate-700 p-3 rounded-lg">
+                                                <p class="text-sm font-medium text-green-800">Profit Margin:</p>
+                                                <div class="flex items-center gap-2 mt-2">
+                                                    <div class="progress">
+                                                        <div class="progress-bar-fill"></div>
+                                                    </div>
+                                                    <span class="badge" style="background: #059669; color: white;">19.3%</span>
+                                                </div>
+                                                <p class="text-xs text-gray-300 mt-1">Higher than most car companies!</p>
+                                            </div>
+                                            <img src="images/tesla_profit_comparison.png" alt="Tesla profit comparison" class="rounded-lg">
+                                        </div>
+                                        <div class="highlight-box">
+                                            <p class="text-sm text-green-800">
+                                                🏠 <strong>Real-life example:</strong> It's like building your own furniture instead of buying it from a store - you save money and get exactly what you want!
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-2 gap-4">
+                                    <div class="card card-blue">
+                                        <div class="card-header">
+                                            <h3 class="card-title text-blue-800">⚡ Faster Innovation</h3>
+                                        </div>
+                                        <div class="card-content space-y-3">
+                                            <img src="images/tesla_software_updates.png" alt="Tesla software updates" class="rounded-lg">
+                                            <p class="text-sm text-blue-800 font-medium">What this means:</p>
+                                            <ul class="space-y-2 text-sm text-gray-300">
+                                                <li>• New features get added quickly</li>
+                                                <li>• Cars get better through software updates</li>
+                                                <li>• No waiting for other companies</li>
+                                            </ul>
+                                            <div class="highlight-box">
+                                                <p class="text-xs text-blue-800">
+                                                    📱 Like how your phone gets new features through updates!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-purple">
+                                        <div class="card-header">
+                                            <h3 class="card-title text-purple-800">🎯 Better Quality Control</h3>
+                                        </div>
+                                        <div class="card-content space-y-3">
+                                            <img src="images/tesla_quality_control.png" alt="Tesla quality control" class="rounded-lg">
+                                            <p class="text-sm text-purple-800 font-medium">What this means:</p>
+                                            <ul class="space-y-2 text-sm text-gray-300">
+                                                <li>• They can fix problems immediately</li>
+                                                <li>• All parts work perfectly together</li>
+                                                <li>• Consistent quality in every car</li>
+                                            </ul>
+                                            <div class="highlight-box">
+                                                <p class="text-xs text-purple-800">
+                                                    👨‍🍳 Like a chef controlling every ingredient in their restaurant!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "The Big Challenges Tesla Faced",
+                subtitle: "Why This Strategy Is Really Hard",
+                content: `
+                    <div class="slide slide-5 active">
+                        <div class="space-y-6">
+                            <div class="text-center mb-6">
+                                <div class="highlight-box">
+                                    <p class="text-lg text-gray-600">Doing everything yourself sounds great, but it's really tough! Here's what Tesla struggled with:</p>
+                                </div>
+                            </div>
+                            <div class="space-y-6">
+                                <div class="card card-red" style="background: linear-gradient(135deg, #7f1d1d, #991b1b);">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-red-800">💸 It Costs A LOT of Money Upfront</h3>
+                                    </div>
+                                    <div class="card-content space-y-4">
+                                        <div class="grid grid-3 gap-4">
+                                            <div class="bg-slate-700 p-4 rounded-lg">
+                                                <p class="text-sm font-medium text-red-800 mb-2">Building One Battery Factory:</p>
+                                                <div class="text-2xl font-bold text-red-400">$5+ Billion</div>
+                                                <p class="text-xs text-gray-300">That's like buying 50,000 luxury cars!</p>
+                                            </div>
+                                            <div class="bg-slate-700 p-4 rounded-lg">
+                                                <p class="text-sm font-medium text-red-800 mb-2">The Problem:</p>
+                                                <p class="text-sm text-gray-300">You have to spend billions before you make any money from selling cars.</p>
+                                            </div>
+                                            <img src="images/tesla_gigafactory_construction.png" alt="Tesla Gigafactory construction" class="rounded-lg">
+                                        </div>
+                                        <div class="highlight-box">
+                                            <p class="text-sm text-red-800">
+                                                🏠 <strong>Like building a house:</strong> You have to pay for everything upfront before you can live in it!
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-2 gap-4">
+                                    <div class="card card-yellow">
+                                        <div class="card-header">
+                                            <h3 class="card-title text-yellow-800">😰 "Production Hell"</h3>
+                                        </div>
+                                        <div class="card-content space-y-3">
+                                            <img src="images/tesla_production_hell.png" alt="Tesla production hell" class="rounded-lg">
+                                            <p class="text-sm text-yellow-800 font-medium">What happened:</p>
+                                            <ul class="space-y-2 text-sm text-gray-300">
+                                                <li>• Tesla promised to make 5,000 cars per week</li>
+                                                <li>• They could only make 2,000 cars per week</li>
+                                                <li>• Customers waited months for their cars</li>
+                                                <li>• Elon Musk slept in the factory!</li>
+                                            </ul>
+                                            <div class="highlight-box">
+                                                <p class="text-xs text-yellow-800">
+                                                    🍕 Like promising to make 100 pizzas but your oven can only make 40!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card card-blue">
+                                        <div class="card-header">
+                                            <h3 class="card-title text-blue-800">🤯 Too Many Things to Learn</h3>
+                                        </div>
+                                        <div class="card-content space-y-3">
+                                            <img src="images/tesla_multiple_expertise.png" alt="Tesla multiple expertise areas" class="rounded-lg">
+                                            <p class="text-sm text-blue-800 font-medium">Tesla had to become experts in:</p>
+                                            <ul class="space-y-2 text-sm text-gray-300">
+                                                <li>• Making batteries (chemistry)</li>
+                                                <li>• Writing software (programming)</li>
+                                                <li>• Building robots (engineering)</li>
+                                                <li>• Mining materials (geology)</li>
+                                            </ul>
+                                            <div class="highlight-box">
+                                                <p class="text-xs text-blue-800">
+                                                    🎓 Like trying to get 5 different college degrees at the same time!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "What We Can Learn from Tesla",
+                subtitle: "The Big Lessons for Everyone",
+                content: `
+                    <div class="slide slide-6 active">
+                        <div class="space-y-6">
+                            <div class="text-center mb-6">
+                                <div class="highlight-box">
+                                    <p class="text-lg text-gray-600">Tesla's story teaches us some powerful lessons about business and innovation:</p>
+                                </div>
+                            </div>
+                            <div class="space-y-6">
+                                <div class="card" style="background: linear-gradient(135deg, #064e3b, #1e40af);">
+                                    <div class="card-header">
+                                        <h3 class="card-title text-green-800">🎯 The Key Success Secrets</h3>
+                                    </div>
+                                    <div class="card-content space-y-4">
+                                        <div class="grid grid-3 gap-4">
+                                            <div class="space-y-4">
+                                                <div class="flex items-start gap-3 p-3 bg-slate-700 rounded-lg">
+                                                    <div class="number-circle" style="background: #059669;">1</div>
+                                                    <div>
+                                                        <p class="font-medium text-sm text-green-800">Think Long-Term</p>
+                                                        <p class="text-xs text-gray-300">Tesla was willing to lose money for years to build something amazing for the future.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-start gap-3 p-3 bg-slate-700 rounded-lg">
+                                                    <div class="number-circle" style="background: #2563eb;">2</div>
+                                                    <div>
+                                                        <p class="font-medium text-sm text-blue-800">Control What Matters Most</p>
+                                                        <p class="text-xs text-gray-300">Tesla focused on controlling the most important parts of their business.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="space-y-4">
+                                                <div class="flex items-start gap-3 p-3 bg-slate-700 rounded-lg">
+                                                    <div class="number-circle" style="background: #7c3aed;">3</div>
+                                                    <div>
+                                                        <p class="font-medium text-sm text-purple-800">Keep Customers Happy</p>
+                                                        <p class="text-xs text-gray-300">By controlling everything, Tesla can give customers exactly what they want.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-start gap-3 p-3 bg-slate-700 rounded-lg">
+                                                    <div class="number-circle" style="background: #d97706;">4</div>
+                                                    <div>
+                                                        <p class="font-medium text-sm text-orange-800">Never Stop Improving</p>
+                                                        <p class="text-xs text-gray-300">Tesla constantly makes their cars, factories, and processes better.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <img src="images/tesla_strategy_presentation.png" alt="Tesla strategy presentation" class="rounded-lg">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card" style="background: linear-gradient(135deg, #374151, #4b5563);">
+                                    <div class="card-content p-6">
+                                        <div class="grid grid-2 gap-4" style="align-items: center;">
+                                            <div class="text-center">
+                                                <h3 class="text-xl font-bold text-gray-100 mb-3">🎓 The Bottom Line</h3>
+                                                <p class="text-lg text-gray-300">
+                                                    Tesla proved that sometimes the best way to build something amazing is to do it yourself - even if it's really hard and expensive. By controlling everything from batteries to software to sales, they created cars that are different from everyone else's and built a business that's hard to copy.
+                                                </p>
+                                                <div class="mt-4 flex justify-center gap-2">
+                                                    <span class="badge" style="background: #059669; color: white;">Innovation</span>
+                                                    <span class="badge" style="background: #2563eb; color: white;">Control</span>
+                                                    <span class="badge" style="background: #7c3aed; color: white;">Success</span>
+                                                </div>
+                                            </div>
+                                                                                         <img src="images/Tesla-logo.png" alt="Tesla success story" class="rounded-lg" style="border: none;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function updateSlide() {
+            const slideTitle = document.getElementById('slide-title');
+            const slideSubtitle = document.getElementById('slide-subtitle');
+            const slideContent = document.getElementById('slide-content');
+            const slideCounter = document.getElementById('slide-counter');
+            const slideNumber = document.getElementById('slide-number');
+            const progressIndicator = document.getElementById('progress-indicator');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            // Update content
+            slideTitle.textContent = slides[currentSlide].title;
+            slideSubtitle.textContent = slides[currentSlide].subtitle;
+            slideContent.innerHTML = slides[currentSlide].content;
+
+            // Update counters and progress
+            slideCounter.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+            slideNumber.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+            progressIndicator.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+            // Update navigation buttons
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+
+            // Update indicators
+            updateIndicators();
+        }
+
+        function updateIndicators() {
+            const indicators = document.getElementById('indicators');
+            indicators.innerHTML = '';
+            
+            for (let i = 0; i < totalSlides; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = `indicator ${i === currentSlide ? 'active' : ''}`;
+                indicator.onclick = () => goToSlide(i);
+                indicators.appendChild(indicator);
+            }
+        }
+
+        function generateQuickNav() {
+            const quickNav = document.getElementById('quick-nav');
+            quickNav.innerHTML = '';
+            
+            slides.forEach((slide, index) => {
+                const btn = document.createElement('button');
+                btn.className = `btn quick-nav-btn ${index === currentSlide ? 'active' : ''}`;
+                btn.innerHTML = `<span class="font-medium">${index + 1}. ${slide.title}</span>`;
+                btn.onclick = () => goToSlide(index);
+                quickNav.appendChild(btn);
+            });
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+                // Scroll to top of slide viewport
+                document.querySelector('.slide-viewport').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+                generateQuickNav();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+                // Scroll to top of slide viewport
+                document.querySelector('.slide-viewport').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+                generateQuickNav();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlide();
+            // Scroll to top of slide viewport
+            document.querySelector('.slide-viewport').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+            generateQuickNav();
+        }
+
+        // Professional keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                previousSlide();
+            } else if (event.key === 'Home') {
+                event.preventDefault();
+                goToSlide(0);
+            } else if (event.key === 'End') {
+                event.preventDefault();
+                goToSlide(totalSlides - 1);
+            } else if (event.key >= '1' && event.key <= '6') {
+                event.preventDefault();
+                goToSlide(parseInt(event.key) - 1);
+            }
+        });
+
+        // Voice Recognition for Navigation
+        let recognition;
+        let isListening = false;
+
+        // Check if browser supports speech recognition
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = function() {
+                console.log('Voice recognition started...');
+                isListening = true;
+            };
+
+            recognition.onresult = function(event) {
+                const command = event.results[0][0].transcript.toLowerCase().trim();
+                console.log('Heard:', command);
+                
+                if (command.includes('next') || command.includes('next slide')) {
+                    nextSlide();
+                } else if (command.includes('previous') || command.includes('prev') || command.includes('back')) {
+                    previousSlide();
+                } else if (command.includes('first') || command.includes('slide 1') || command.includes('slide one')) {
+                    goToSlide(0);
+                } else if (command.includes('last') || command.includes('slide 6') || command.includes('slide six')) {
+                    goToSlide(5);
+                } else if (command.includes('slide 2') || command.includes('slide two')) {
+                    goToSlide(1);
+                } else if (command.includes('slide 3') || command.includes('slide three')) {
+                    goToSlide(2);
+                } else if (command.includes('slide 4') || command.includes('slide four')) {
+                    goToSlide(3);
+                } else if (command.includes('slide 5') || command.includes('slide five')) {
+                    goToSlide(4);
+                } else if (command.includes('slide') && command.match(/\d+/)) {
+                    const slideNumber = parseInt(command.match(/\d+/)[0]);
+                    if (slideNumber >= 1 && slideNumber <= 6) {
+                        goToSlide(slideNumber - 1);
+                    }
+                } else if (command.includes('stop scroll') || command.includes('stop auto scroll') || command.includes('pause scroll')) {
+                    isAutoScrolling = false;
+                    stopAutoScroll();
+                    console.log('Auto-scroll stopped by voice command');
+                } else if (command.includes('start scroll') || command.includes('start auto scroll') || command.includes('resume scroll') || command.includes('continue scroll')) {
+                    isAutoScrolling = true;
+                    startAutoScroll();
+                    console.log('Auto-scroll started by voice command');
+                }
+            };
+
+            recognition.onend = function() {
+                console.log('Voice recognition ended');
+                isListening = false;
+                // Restart listening after a short delay
+                setTimeout(() => {
+                    if (!isListening) {
+                        startVoiceRecognition();
+                    }
+                }, 1000);
+            };
+
+            recognition.onerror = function(event) {
+                console.log('Voice recognition error:', event.error);
+                isListening = false;
+                // Restart listening after error
+                setTimeout(() => {
+                    if (!isListening) {
+                        startVoiceRecognition();
+                    }
+                }, 2000);
+            };
+
+            function startVoiceRecognition() {
+                try {
+                    recognition.start();
+                } catch (error) {
+                    console.log('Voice recognition already started');
+                }
+            }
+
+            // Start voice recognition when page loads
+            window.addEventListener('load', function() {
+                setTimeout(startVoiceRecognition, 1000);
+            });
+        } else {
+            console.log('Speech recognition not supported in this browser');
+        }
+
+        // Initialize presentation
+        updateSlide();
+        generateQuickNav();
+
+        // Professional smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Add presentation mode toggle (optional)
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'F11' || (event.key === 'f' && event.ctrlKey)) {
+                event.preventDefault();
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
+        // Auto-scroll functionality
+        let autoScrollInterval;
+        let isAutoScrolling = true;
+        let mouseTimeout;
+        let lastMouseY = 0;
+
+        function startAutoScroll() {
+            if (autoScrollInterval) clearInterval(autoScrollInterval);
+            
+            autoScrollInterval = setInterval(() => {
+                if (isAutoScrolling) {
+                    window.scrollBy({
+                        top: 1,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 100); // Scroll 1px every 100ms = slow scroll
+        }
+
+        function stopAutoScroll() {
+            if (autoScrollInterval) {
+                clearInterval(autoScrollInterval);
+                autoScrollInterval = null;
+            }
+        }
+
+        function handleMouseMove(event) {
+            const currentMouseY = event.clientY;
+            
+            // Check if mouse moved significantly
+            if (Math.abs(currentMouseY - lastMouseY) > 5) {
+                isAutoScrolling = false;
+                stopAutoScroll();
+                
+                // Clear existing timeout
+                if (mouseTimeout) clearTimeout(mouseTimeout);
+                
+                // Restart auto-scroll after mouse stops moving
+                mouseTimeout = setTimeout(() => {
+                    isAutoScrolling = true;
+                    startAutoScroll();
+                }, 2000); // Wait 2 seconds after mouse stops moving
+            }
+            
+            lastMouseY = currentMouseY;
+        }
+
+        function handleMouseWheel(event) {
+            // Pause auto-scroll when user scrolls manually
+            isAutoScrolling = false;
+            stopAutoScroll();
+            
+            // Clear existing timeout
+            if (mouseTimeout) clearTimeout(mouseTimeout);
+            
+            // Restart auto-scroll after user stops scrolling
+            mouseTimeout = setTimeout(() => {
+                isAutoScrolling = true;
+                startAutoScroll();
+            }, 3000); // Wait 3 seconds after manual scroll
+        }
+
+        function handleTouchMove() {
+            // Pause auto-scroll on touch devices
+            isAutoScrolling = false;
+            stopAutoScroll();
+            
+            // Clear existing timeout
+            if (mouseTimeout) clearTimeout(mouseTimeout);
+            
+            // Restart auto-scroll after touch stops
+            mouseTimeout = setTimeout(() => {
+                isAutoScrolling = true;
+                startAutoScroll();
+            }, 3000);
+        }
+
+        // Add event listeners for auto-scroll control
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('wheel', handleMouseWheel);
+        document.addEventListener('touchmove', handleTouchMove);
+
+        // Start auto-scroll when page loads
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                startAutoScroll();
+            }, 2000); // Start auto-scroll 2 seconds after page loads
+        });
+
+        // Pause auto-scroll when presentation is in fullscreen
+        document.addEventListener('fullscreenchange', function() {
+            if (document.fullscreenElement) {
+                isAutoScrolling = false;
+                stopAutoScroll();
+            } else {
+                setTimeout(() => {
+                    isAutoScrolling = true;
+                    startAutoScroll();
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
