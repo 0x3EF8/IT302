@@ -1356,6 +1356,16 @@
                     block: 'start' 
                 });
                 generateQuickNav();
+                
+                // Restart auto-scroll if it was active
+                if (isAutoScrolling) {
+                    // Stop current auto-scroll
+                    stopAutoScroll();
+                    // Restart auto-scroll after a delay
+                    setTimeout(() => {
+                        startAutoScroll();
+                    }, 1500); // Wait 1.5 seconds after slide change
+                }
             }
         }
 
@@ -1369,6 +1379,16 @@
                     block: 'start' 
                 });
                 generateQuickNav();
+                
+                // Restart auto-scroll if it was active
+                if (isAutoScrolling) {
+                    // Stop current auto-scroll
+                    stopAutoScroll();
+                    // Restart auto-scroll after a delay
+                    setTimeout(() => {
+                        startAutoScroll();
+                    }, 1500); // Wait 1.5 seconds after slide change
+                }
             }
         }
 
@@ -1381,6 +1401,16 @@
                 block: 'start' 
             });
             generateQuickNav();
+            
+            // Restart auto-scroll if it was active
+            if (isAutoScrolling) {
+                // Stop current auto-scroll
+                stopAutoScroll();
+                // Restart auto-scroll after a delay
+                setTimeout(() => {
+                    startAutoScroll();
+                }, 1500); // Wait 1.5 seconds after slide change
+            }
         }
 
         // Professional keyboard navigation
